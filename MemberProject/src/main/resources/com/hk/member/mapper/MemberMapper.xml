@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.member.mapper.MemberMapper">
+
+<select id="memberList" resultType="com.hk.member.vo.Member">
+<!-- id는 MemberService에 method명이고 resultType class(우리가 리턴받을 타입을 MemberService에서 List<Member>로 줬기 때문에 를 줬는데 만약  insert처러 리턴이 int면 int로 줄 수도 있도 바뀔 수 있다-->
+<!-- 그 결과값을 vo에 넣어줘서 List배열에 넣어준다 -->
+select * from members
+<!-- 쿼리뮨을 줬는데 mybatis가 알아서 디비에 있는정보를 가져와ㅅ -->
+</select>
+
+
+</mapper>
+<!--mybatis홈페이지가면 이렇게 쓰라고 주어져있다 이거가 service를 부른다 -->

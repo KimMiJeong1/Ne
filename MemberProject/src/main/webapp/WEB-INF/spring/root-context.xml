@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- ojdbc등록 -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<!-- 주석을 바꾸는 이유는 둘다 name이 driverClassName이라서 //이거는 그전에 context param으로 
+			줬다 나중에 다시 바꾸기 -->
+		<!-- <property name="driverClassName" -->
+		<!-- value="oracle.jdbc.OracleDriver"></property> -->
+		<!-- <property name="jdbcUrl" -->
+		<!-- value="jdbc:oracle:thin:@localhost:1521:XE"></property>@localhost:1521:XE는 바뀔 수 있다 -->
+		
+		<!-- log볼 필요가 없을 때는 위에꺼랑 바꾸면 돤다(개발할 때는 어떻게 진행되는지 보기 편하게 하기위해 사용 -->	
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
+
+		<property name="username" value="STUDY"></property>
+		<property name="password" value="STUDY"></property>
+	</bean>
+
+	<!-- hikari 데이터소스 넣기 -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<!-- mybatis붙이기아까 데이터소스에 넣은 dataSource를 여기에 집에넣에서 dataSource라는 이름으로 sqlSessionFactory실행 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean><!-- sqlSessionFactory를 mybatis에서 쓴다 -->
+
+	<!-- mybatis-spring -->
+	<mybatis-spring:scan
+		base-package="com.hk.member.mapper" />
+
+	<!-- 여기까지는 1,2,6번만 쿼리는 아직 가져오지 않았다 여기까지 실행해보면 콘솔창에 HikariPool-1가 나오면 실행이 
+		된거다 -->
+
+</beans>
